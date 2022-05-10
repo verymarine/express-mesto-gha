@@ -7,11 +7,16 @@ module.exports.getUsers = async (req, res) => {
     const user = await User.find({});
     if (user) {
       res.send(user);
-    } else {
+    }
+    // else {
+    // res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
+    //   return;
+    // }
+  } catch (err) {
+    if (err.name === 'CastError') {
       res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
       return;
     }
-  } catch (err) {
     res.status(500).send({ massage: err.message });
   }
   // .then((users) => res.send({ data: users }))
