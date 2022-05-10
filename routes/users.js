@@ -10,7 +10,7 @@ const {
 
 router.get('/', getUsers);
 router.get('/:_id', getUserId);
-router.post('/', express.json(), postUser);
+router.post('/', postUser);
 router.patch('/me', patchUser);
 router.patch('/me/avatar', patchUserAvatar);
 
