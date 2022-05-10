@@ -37,7 +37,7 @@ module.exports.postUser = (req, res) => {
       { name, about, avatar },
     );
     if (user) {
-      res.status(201).send(user);
+      res.status(201).send({ name, about, avatar });
     } else {
       res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
     }
