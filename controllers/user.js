@@ -9,6 +9,7 @@ module.exports.getUsers = async (req, res) => {
       res.send(user);
     } else {
       res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
+      return;
     }
   } catch (err) {
     res.status(500).send({ massage: err.message });
@@ -58,17 +59,20 @@ module.exports.patchUser = async (req, res) => {
     const user = await User.findByIdAndUpdate(
       req.user._id,
       { name: req.body.name, about: req.body.about },
-      { new: true },
-      { runValidators: true },
+      {
+        new: true,
+        runValidators: true,
+      },
     );
-    if (!user._id) {
-      res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
-    } else {
+    if (user) {
       res.status(200).send(user);
+    } else {
+      res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
     }
   } catch (err) {
     if (err.name === 'ValidationError') {
       res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
+      return;
     }
     res.status(500).send({ massage: err.message });
   }
