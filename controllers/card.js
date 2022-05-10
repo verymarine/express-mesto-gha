@@ -63,10 +63,10 @@ module.exports.putLikeCard = async (req, res) => {
       { new: true },
     )
       .populate('owner');
-    if (!card._id) {
-      res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
-    } else {
+    if (card) {
       res.status(200).send(card);
+    } else {
+      res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
     }
   } catch (err) {
     if (err.name === 'ValidationError') {
@@ -74,6 +74,26 @@ module.exports.putLikeCard = async (req, res) => {
     }
     res.status(500).send({ massage: err.message });
   }
+
+  // try {
+  //   const card = await Card.findByIdAndUpdate(
+  //     req.params._id,
+  //     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
+  //     { new: true },
+  //   )
+  //     .populate('owner');
+  //   if (!card._id) {
+  //     res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
+  //   } else {
+  //     res.status(200).send(card);
+  //   }
+  // } catch (err) {
+  //   if (err.name === 'ValidationError') {
+  //     res.status(400).send({ message: 'Переданы некорректные данные' });
+  //   }
+  //   res.status(500).send({ massage: err.message });
+  // }
+
   // Card.findByIdAndUpdate(
   //   req.params._id,
   //   { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
