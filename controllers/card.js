@@ -74,8 +74,8 @@ module.exports.putLikeCard = async (req, res) => {
       res.status(404).send({ message: 'Карточка по указанному _id не найдена' });
     }
   } catch (err) {
-    if (err.name === 'ValidationError') {
-      res.status(400).send({ message: 'Переданы некорректные данные' });
+    if (err.name === 'CastError') {
+      res.status(400).send({ message: 'Чужую карточку не удлалить' });
     }
     res.status(500).send({ massage: err.message });
   }
@@ -123,8 +123,8 @@ module.exports.deleteLikeCard = async (req, res) => {
       res.status(404).send({ message: 'Карточка по указанному _id не найдена' });
     }
   } catch (err) {
-    if (err.name === 'ValidationError') {
-      res.status(400).send({ message: 'Переданы некорректные данные' });
+    if (err.name === 'CastError') {
+      res.status(400).send({ message: 'Чужую карточку не удлалить' });
     }
     res.status(500).send({ massage: err.message });
   }
