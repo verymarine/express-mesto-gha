@@ -19,13 +19,18 @@ module.exports.getCards = async (req, res) => {
 module.exports.postCard = async (req, res) => {
   try {
     const { name, link } = req.body;
-    const card = await Card.create({ name, link, owner: req.user._id });
+    const card = await Card.create(
+      { name, link, owner: req.user._id },
+      // { runValidators: true },
+    );
     if (card) {
       res.status(201).send(card);
-    } else {
-      res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
     }
   } catch (err) {
+    if (err.name === 'ValidationError') {
+      res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
+      return;
+    }
     res.status(500).send({ massage: err.message });
   }
 
