@@ -39,14 +39,19 @@ module.exports.postCard = async (req, res) => {
 };
 
 module.exports.deleteCard = async (req, res) => {
+  // const card = await Card.findByIdAndRemove(req.params._id).populate('owner');
   try {
     const card = await Card.findByIdAndRemove(req.params._id).populate('owner');
     if (card) {
       res.status(200).send(card);
     } else {
-      res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
+      res.status(404).send({ message: 'Карточка по указанному _id не найдена' });
+      return;
     }
   } catch (err) {
+    if (err.name === 'CastError') {
+      res.status(400).send({ message: 'Чужую карточку не удлалить' });
+    }
     res.status(500).send({ massage: err.message });
   }
 
@@ -66,7 +71,7 @@ module.exports.putLikeCard = async (req, res) => {
     if (card) {
       res.status(200).send(card);
     } else {
-      res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
+      res.status(404).send({ message: 'Карточка по указанному _id не найдена' });
     }
   } catch (err) {
     if (err.name === 'ValidationError') {
@@ -115,7 +120,7 @@ module.exports.deleteLikeCard = async (req, res) => {
     if (card) {
       res.status(200).send(card);
     } else {
-      res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
+      res.status(404).send({ message: 'Карточка по указанному _id не найдена' });
     }
   } catch (err) {
     if (err.name === 'ValidationError') {
