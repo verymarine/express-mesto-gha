@@ -50,7 +50,7 @@ module.exports.deleteCard = async (req, res) => {
     }
   } catch (err) {
     if (err.name === 'CastError') {
-      res.status(400).send({ message: 'Чужую карточку не удлалить' });
+      res.status(400).send({ message: 'Некорректные данные' });
     }
     res.status(500).send({ massage: err.message });
   }
@@ -75,7 +75,7 @@ module.exports.putLikeCard = async (req, res) => {
     }
   } catch (err) {
     if (err.name === 'CastError') {
-      res.status(400).send({ message: 'Чужую карточку не удлалить' });
+      res.status(400).send({ message: 'Некорректные данные' });
     }
     res.status(500).send({ massage: err.message });
   }
@@ -124,7 +124,7 @@ module.exports.deleteLikeCard = async (req, res) => {
     }
   } catch (err) {
     if (err.name === 'CastError') {
-      res.status(400).send({ message: 'Чужую карточку не удлалить' });
+      res.status(400).send({ message: 'Некорректные данные' });
     }
     res.status(500).send({ massage: err.message });
   }

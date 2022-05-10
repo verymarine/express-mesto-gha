@@ -6,17 +6,12 @@ module.exports.getUsers = async (req, res) => {
   try {
     const user = await User.find({});
     if (user) {
-      res.send(user);
-    }
-    // else {
-    // res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
-    //   return;
-    // }
-  } catch (err) {
-    if (err.name === 'CastError') {
+      res.status(200).send(user);
+    } else {
       res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
       return;
     }
+  } catch (err) {
     res.status(500).send({ massage: err.message });
   }
   // .then((users) => res.send({ data: users }))
@@ -32,6 +27,9 @@ module.exports.getUserId = async (req, res) => {
       res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
     }
   } catch (err) {
+    if (err.name === 'CastError') {
+      res.status(400).send({ message: 'Некорректные данные' });
+    }
     res.status(500).send({ massage: err.message });
   }
 };
@@ -76,7 +74,7 @@ module.exports.patchUser = async (req, res) => {
     }
   } catch (err) {
     if (err.name === 'ValidationError') {
-      res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
+      res.status(400).send({ message: 'Переданы некорректные данные при изменении пользователя' });
       return;
     }
     res.status(500).send({ massage: err.message });
@@ -100,7 +98,7 @@ module.exports.patchUserAvatar = async (req, res) => {
     }
   } catch (err) {
     if (err.name === 'ValidationError') {
-      res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
+      res.status(400).send({ message: 'Переданы некорректные данные при изменении пользователя' });
     }
     res.status(500).send({ massage: err.message });
   }
