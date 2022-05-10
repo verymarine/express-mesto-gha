@@ -4,7 +4,9 @@ const express = require('express');
 
 const router = express.Router();
 
-const { getUsers, getUserId, postUser, patchUser, patchUserAvatar } = require('../controllers/user');
+const {
+  getUsers, getUserId, postUser, patchUser, patchUserAvatar,
+} = require('../controllers/user');
 
 router.get('/', getUsers);
 router.get('/:_id', getUserId);
