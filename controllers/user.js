@@ -30,18 +30,22 @@ module.exports.getUserId = async (req, res) => {
   }
 };
 
-module.exports.postUser = (req, res) => {
+module.exports.postUser = async (req, res) => {
   try {
     const { name, about, avatar } = req.body;
-    const user = User.create(
+    const user = await User.create(
       { name, about, avatar },
+      // { runValidators: true },
     );
     if (user) {
-      res.status(201).send({ name, about, avatar });
-    } else {
-      res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
+      res.status(201).send(user);
+      return;
     }
   } catch (err) {
+    if (err.name === 'ValidationError') {
+      res.status(400).send({ message: 'Переданы некорректные данные при создании пользователя' });
+      return;
+    }
     res.status(500).send({ massage: err.message });
   }
   // .then((users) => res.status(201).send({ data: users }))
