@@ -112,7 +112,7 @@ module.exports.deleteLikeCard = async (req, res) => {
       { new: true },
     )
       .populate('owner');
-    if (!card._id) {
+    if (card) {
       res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
     } else {
       res.status(200).send(card);
