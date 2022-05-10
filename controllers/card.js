@@ -47,10 +47,6 @@ module.exports.deleteCard = async (req, res) => {
       res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
     }
   } catch (err) {
-    if (card._id !== user._id) {
-      res.status(400).send({ message: 'Переданы некорректные данные' });
-      return;
-    }
     res.status(500).send({ massage: err.message });
   }
 
