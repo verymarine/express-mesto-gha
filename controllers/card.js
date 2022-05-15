@@ -53,9 +53,11 @@ module.exports.deleteCard = async (req, res, next) => {
       next(new BadRequest('Некорректные данные'));
       // res.status(400).send({ message: 'Некорректные данные' });
     } else {
-      next(err);
-      // res.status(500).send({ message: err.message });
+      next(new NotFound('Карточка по указанному _id не найдена'));
+      // res.status(404).send({ message: 'Карточка по указанному _id не найдена' });
     }
+    next(err);
+    // res.status(500).send({ message: err.message });
   }
 };
 
