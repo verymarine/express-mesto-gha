@@ -6,7 +6,7 @@ const { celebrate, Joi, errors } = require('celebrate');
 
 const { login, createUser } = require('./controllers/user');
 const auth = require('./middlewares/auth');
-const NotFound = require('./errors/NotFound');
+// const NotFound = require('./errors/NotFound');
 
 // вызов нашего модуля
 const app = express();
@@ -52,7 +52,7 @@ app.use('*', auth, (req, res) => {
 
 app.use(errors());
 
-app.use((req, res, next) => {
+app.use((req, res) => {
   // next(new NotFound('Страницы не существует'));
   res.status(404).send({ message: 'Страницы не существует' });
 });
