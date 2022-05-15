@@ -110,7 +110,9 @@ module.exports.createUser = async (req, res, next) => {
       next(new BadRequest('Неверный email или пароль'));
       // res.status(400).send({ message: 'Ошибка введеных данных' });
     } else {
-      res.status(201).send(user);
+      res.status(201).send({
+        name, about, avatar, email,
+      });
     }
   } catch (err) {
     if (err.code === MONGO_DUBLICATE_ERROR_CODE) {
