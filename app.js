@@ -53,8 +53,8 @@ app.use('*', auth, (req, res) => {
 app.use(errors());
 
 app.use((req, res, next) => {
-  next(new NotFound('Страницы не существует'));
-  // res.status(404).send({ message: 'Страницы не существует' });
+  // next(new NotFound('Страницы не существует'));
+  res.status(404).send({ message: 'Страницы не существует' });
 });
 
 app.use((err, req, res, next) => {

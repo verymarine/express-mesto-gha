@@ -1,5 +1,6 @@
 const BadRequest = require('../errors/BadRequest');
 const NotFound = require('../errors/NotFound');
+const Forbidden = require('../errors/Forbidden');
 const Card = require('../models/card');
 
 module.exports.getCards = async (req, res, next) => {
@@ -43,7 +44,7 @@ module.exports.deleteCard = async (req, res, next) => {
       res.status(200).send(card);
       card.remove();
     } else {
-      next(new NotFound('Нельзя удалять чужие карточки ヽ(`⌒´メ)ノ'));
+      next(new Forbidden('Нельзя удалять чужие карточки ヽ(`⌒´メ)ノ'));
       // res.status(404).send({ message: 'Вы не имеете прав на удаления' });
       // return;
     }
