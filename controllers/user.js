@@ -103,7 +103,7 @@ module.exports.createUser = async (req, res, next) => {
       name, about, avatar, email, password,
     } = req.body;
     const hash = await bcrypt.hash(password, 10);
-    const user = await User.create({
+    await User.create({
       name, about, avatar, email, password: hash,
     });
     if (!email || !password) {
