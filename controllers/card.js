@@ -10,7 +10,6 @@ module.exports.getCards = async (req, res, next) => {
       res.status(200).send(card);
     }
   } catch (err) {
-    // res.status(500).send({ message: err.message });
     next(err);
   }
 };
@@ -20,7 +19,6 @@ module.exports.postCard = async (req, res, next) => {
     const { name, link } = req.body;
     let card = await Card.create(
       { name, link, owner: req.user._id },
-      // { runValidators: true },
     );
     card = await card.populate('owner');
     if (card) {
@@ -29,10 +27,7 @@ module.exports.postCard = async (req, res, next) => {
   } catch (err) {
     if (err.name === 'ValidationError') {
       next(new BadRequest('Переданы некорректные данные при создании карточки'));
-      // res.status(400).send({ message: 'Переданы некорректные данные при создании карточки' });
-      // return;
     }
-    // res.status(500).send({ message: err.message });
     next(err);
   }
 };
@@ -40,24 +35,20 @@ module.exports.postCard = async (req, res, next) => {
 module.exports.deleteCard = async (req, res, next) => {
   try {
     const card = await Card.findById(req.params._id);
+    if (!card) {
+      next(new NotFound('Карточка по указанному _id не найдена'));
+    }
     if (card.owner.toString() === req.user._id) {
-      res.status(200).send(card);
       card.remove();
+      res.status(200).send(card);
     } else {
       next(new Forbidden('Нельзя удалять чужие карточки ヽ(`⌒´メ)ノ'));
-      // res.status(404).send({ message: 'Вы не имеете прав на удаления' });
-      // return;
     }
   } catch (err) {
     if (err.name === 'CastError') {
       next(new BadRequest('Некорректные данные'));
-      // res.status(400).send({ message: 'Некорректные данные' });
-    } else {
-      next(new NotFound('Карточка по указанному _id не найдена'));
-      // res.status(404).send({ message: 'Карточка по указанному _id не найдена' });
     }
     next(err);
-    // res.status(500).send({ message: err.message });
   }
 };
 
@@ -73,15 +64,12 @@ module.exports.putLikeCard = async (req, res, next) => {
       res.status(200).send(card);
     } else {
       next(new NotFound('Карточка по указанному _id не найдена'));
-      // res.status(404).send({ message: 'Карточка по указанному _id не найдена' });
     }
   } catch (err) {
     if (err.name === 'CastError') {
       next(new BadRequest('Некорректные данные'));
-      // res.status(400).send({ message: 'Некорректные данные' });
     } else {
       next(err);
-      // res.status(500).send({ message: err.message });
     }
   }
 };
@@ -98,15 +86,12 @@ module.exports.deleteLikeCard = async (req, res, next) => {
       res.status(200).send(card);
     } else {
       next(new NotFound('Карточка по указанному _id не найдена'));
-      // res.status(404).send({ message: 'Карточка по указанному _id не найдена' });
     }
   } catch (err) {
     if (err.name === 'CastError') {
       next(new BadRequest('Некорректные данные'));
-      // res.status(400).send({ message: 'Некорректные данные' });
     } else {
       next(err);
-      // res.status(500).send({ message: err.message });
     }
   }
 };
